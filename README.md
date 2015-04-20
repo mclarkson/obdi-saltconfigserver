@@ -24,6 +24,16 @@ Salt States and Formulas are referred to as Classes in all areas of the Web Inte
 This term has been borrowed from Puppet just because it's easier to fit into
 various areas of the GUI.
 
+When choosing states to add to a server only the states available for the current GIT
+version are shown, along with a description of the state/formula. To supply a description
+that will be shown in the Web Interface, the administrator adds comments at the top each
+state file containing the description. The format is as follows:
+
+```
+# DESC: A description for this state file
+# DESC: that can span multiple lines
+```
+
 #### Datacentres and environments
 
 Saved on each server as the grains, dc and env.
