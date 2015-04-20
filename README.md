@@ -47,3 +47,11 @@ environment_\<semantic-version\>
 For example, test_0.1.123 or prod_1.0.27
 
 ## Installation
+
+#### Installing the plugin
+
+Refer to [obdi-salt-repository](https://github.com/mclarkson/obdi-salt-repository) and [Obdi Plugins](https://github.com/mclarkson/obdi/blob/master/doc/plugins.md) to install this plugin.
+
+## System configuration
+
+
