@@ -33,7 +33,7 @@ def getGrains( dc, env, __opts__ ):
     stdout_bak = sys.stdout
     with open(os.devnull, 'wb') as f:
         sys.stdout = f
-        items = runner.cmd("cache.grains", "")
+        items = runner.cmd("cache.grains", [])
     sys.stdout = stdout_bak
 
     arr = []
