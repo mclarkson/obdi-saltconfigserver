@@ -618,7 +618,7 @@ mgrApp.controller("saltconfigserverCtrl", function ($scope,$http,$modal,$log,
       return;
     }
 
-    if( !$scope.config.Classes ) {
+    if( !$scope.config.Classes || $scope.config.Classes.length == 0 ) {
         $scope.config = {};
         $scope.config.Classes = [];
         $scope.config.Styles = [];
