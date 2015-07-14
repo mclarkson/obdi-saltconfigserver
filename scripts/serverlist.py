@@ -26,6 +26,32 @@ import salt.config
 import salt.runner
 import salt.client
 
+def ErrorMsg(escape=0):
+    """
+    returns: string
+    
+    simualtes the traceback output and if argemument
+    <escape> set to 1 (true) the string will be
+    converted to fit into html documents without problems.    
+    """
+    import traceback, sys, string
+    
+    type=None
+    value=None
+    tb=None
+    limit=None
+    type, value, tb = sys.exc_info()
+    body = "Traceback (innermost last):\n"
+    list = traceback.format_tb(tb, limit) + traceback.format_exception_only(type, value)
+    body = body + "%-20s %s" % (
+        string.join(list[:-1], ""),
+        list[-1],
+        )
+    if escape:
+        import cgi
+        body = cgi.escape(body)
+    return body
+
 def getGrains( dc, env, __opts__ ):
 
     runner = salt.runner.Runner(__opts__)
@@ -103,59 +129,65 @@ def getServers( dc, env, __opts__ ):
 
 if __name__ == '__main__':
 
-    __opts__ = salt.config.master_config(
-            os.environ.get('SALT_MASTER_CONFIG', '/etc/salt/master'))
+    try:
+	stdout_bak = sys.stdout
 
-    # Get command line args
+        __opts__ = salt.config.master_config(
+                os.environ.get('SALT_MASTER_CONFIG', '/etc/salt/master'))
 
-    script = sys.argv.pop(0)
+        # Get command line args
 
-    dc = ""
-    if len(sys.argv)>0:
-        dc = sys.argv.pop(0)
+        script = sys.argv.pop(0)
 
-    env = ""
-    if len(sys.argv)>0:
-        env = sys.argv.pop(0)
+        dc = ""
+        if len(sys.argv)>0:
+            dc = sys.argv.pop(0)
 
-    # Get grains cache into flat array
+        env = ""
+        if len(sys.argv)>0:
+            env = sys.argv.pop(0)
 
-    grains_cache,cache_items = getGrains( dc, env, __opts__ )
+        # Get grains cache into flat array
 
-    # Ping servers using Salt
+        grains_cache,cache_items = getGrains( dc, env, __opts__ )
 
-    servers,server_items = getServers( dc, env, __opts__ )
+        # Ping servers using Salt
 
-    # What's the difference
+        servers,server_items = getServers( dc, env, __opts__ )
 
-    servers_set = set( servers )
-    grains_cache_set = set( grains_cache )
-    difference = grains_cache_set - servers_set
+        # What's the difference
 
-    # Send back an array of objects all set up nicely for obdi
+        servers_set = set( servers )
+        grains_cache_set = set( grains_cache )
+        difference = grains_cache_set - servers_set
 
-    ret = []
-    i=0
-    for a in difference:
-        obj={}
-        obj['Name']= a
-        obj['Selected'] = False
-        obj['Responded'] = False
-        if 'version' in cache_items[a]:
-            obj['Version'] = cache_items[a]["version"]
-        if 'env' in cache_items[a]:
-            obj['Env'] = cache_items[a]["env"]
-        ret.append( obj )
-    for a in servers:
-        obj={}
-        obj['Name']= a
-        obj['Selected'] = False
-        obj['Responded'] = True
-        if 'version' in server_items[a]:
-            obj['Version'] = server_items[a]["version"]
-        if 'env' in server_items[a]:
-            obj['Env'] = server_items[a]["env"]
-        ret.append( obj )
+        # Send back an array of objects all set up nicely for obdi
 
-    print json.dumps( ret )
+        ret = []
+        i=0
+        for a in difference:
+            obj={}
+            obj['Name']= a
+            obj['Selected'] = False
+            obj['Responded'] = False
+            if 'version' in cache_items[a]:
+                obj['Version'] = cache_items[a]["version"]
+            if 'env' in cache_items[a]:
+                obj['Env'] = cache_items[a]["env"]
+            ret.append( obj )
+        for a in servers:
+            obj={}
+            obj['Name']= a
+            obj['Selected'] = False
+            obj['Responded'] = True
+            if 'version' in server_items[a]:
+                obj['Version'] = server_items[a]["version"]
+            if 'env' in server_items[a]:
+                obj['Env'] = server_items[a]["env"]
+            ret.append( obj )
 
+        print json.dumps( ret )
+
+    except Exception:
+	sys.stdout = stdout_bak
+        print ErrorMsg()
