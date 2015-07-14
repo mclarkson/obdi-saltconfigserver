@@ -191,3 +191,4 @@ if __name__ == '__main__':
     except Exception:
 	sys.stdout = stdout_bak
         print ErrorMsg()
+        sys.exit(1)
