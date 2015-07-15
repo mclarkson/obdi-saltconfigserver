@@ -41,7 +41,7 @@ Saved on each server as the grains: dc and env.
 
 #### GIT Versioning
 
-Saved on each server as the grain, version.
+Saved on each server as the grain: version.
 
 environment_\<semantic-version\>
 
