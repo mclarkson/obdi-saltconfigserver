@@ -37,7 +37,7 @@ each state file containing the description. The format is as follows:
 
 #### Datacentres and environments
 
-Saved on each server as the grains, dc and env.
+Saved on each server as the grains: dc and env.
 
 #### GIT Versioning
 
