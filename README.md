@@ -31,8 +31,8 @@ that will be shown in the Web Interface, the administrator adds comments at the 
 each state file containing the description. The format is as follows:
 
 ```
-# DESC: A description for this state file
-# DESC: that can span multiple lines
+# INFO: A description for this state file
+# INFO: that can span multiple lines
 ```
 
 #### Datacentres and environments
