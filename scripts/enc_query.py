@@ -152,10 +152,10 @@ def main():
     g['enc_pass'] = conf['man_password']
 
     # First item is the script name
-    dummy = sys.argv.pop(0)
+    dummy = sys.argv[0]
 
-    if len(sys.argv)>0:
-        g['salt_id'] = sys.argv.pop(0)
+    if len(sys.argv)>1:
+        g['salt_id'] = sys.argv[1]
     else:
         usage()
         sys.exit(1)

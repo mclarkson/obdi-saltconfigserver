@@ -140,11 +140,11 @@ if __name__ == '__main__':
         script = sys.argv[0]
 
         dc = ""
-        if len(sys.argv)>0:
+        if len(sys.argv)>1:
             dc = sys.argv[1]
 
         env = ""
-        if len(sys.argv)>0:
+        if len(sys.argv)>2:
             env = sys.argv[2]
 
         # Get grains cache into flat array
