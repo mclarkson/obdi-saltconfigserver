@@ -137,15 +137,15 @@ if __name__ == '__main__':
 
         # Get command line args
 
-        script = sys.argv.pop(0)
+        script = sys.argv[0]
 
         dc = ""
         if len(sys.argv)>0:
-            dc = sys.argv.pop(0)
+            dc = sys.argv[1]
 
         env = ""
         if len(sys.argv)>0:
-            env = sys.argv.pop(0)
+            env = sys.argv[2]
 
         # Get grains cache into flat array
 
