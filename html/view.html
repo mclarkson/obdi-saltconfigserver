@@ -209,9 +209,9 @@
                     <tr ng-repeat="server in filteredItems = (servernames | filter:hostfilter)"
                       class="{{style(server.Responded,server.Selected)}}">
                     <td style="text-align: center;">
-                      <input type="checkbox" ng-selected="server.Selected"
+                      <input type="checkbox"
                       ng-model="server.Selected"
-                      ng-click="Selected(server.Name)"
+                      ng-change="Selected(server.Name)"
                       ng-if="server.Responded">
                     </td>
                     <td>{{server.Name}}</td>

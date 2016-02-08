@@ -347,8 +347,6 @@ mgrApp.controller("saltconfigserverCtrl", function ($scope,$http,$modal,$log,
       alert("(ERROR 1013) Not found in list: " + servername);
     }
 
-    server.Selected = server.Selected == true ? false:true;
-
     ReviewBtnStatus();
   }
 
