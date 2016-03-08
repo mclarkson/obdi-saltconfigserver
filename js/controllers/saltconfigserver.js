@@ -15,27 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // ------------------------------------------------------------------------
-mgrApp.directive("updsel", function () {
-// ------------------------------------------------------------------------
-// Refreshes the bootstrap-select add-on after angularjs has
-// loaded dcs variable.
-
-    return function (scope, element, attrs) {
-        scope.$watch("config", function (value) {//I change here
-            var val = value || null;            
-            if (val)
-                element.selectpicker('refresh');
-                //$('.selectpicker').selectpicker('refresh');
-        });
-    };
-});
-
-// ------------------------------------------------------------------------
 // AngularJS Controller
 // ------------------------------------------------------------------------
 
-mgrApp.controller("saltconfigserverCtrl", function ($scope,$http,$modal,$log,
-      $timeout,baseUrl,$rootScope) {
+mgrApp.controller("saltconfigserverCtrl", function ($scope,$http,$uibModal
+      ,$log,$timeout,baseUrl,$rootScope) {
 
   $scope.statedescs = [];
   $scope.statedescs_names = [];
@@ -1490,6 +1474,9 @@ mgrApp.controller("saltconfigserverCtrl", function ($scope,$http,$modal,$log,
       });
 
       $scope.get_desc_in_progress = false;
+      $timeout( function() {
+          $('select').selectpicker('refresh');
+      });
 
     }).error( function(data,status) {
       if (status>=500) {
@@ -1640,7 +1627,7 @@ mgrApp.controller("saltconfigserverCtrl", function ($scope,$http,$modal,$log,
         $scope.classname = "ALL CLASSES"
     }
 
-    var modalInstance = $modal.open({
+    var modalInstance = $uibModal.open({
       templateUrl: 'myModalContent.html',
       controller: $scope.ModalInstanceCtrl,
       size: 'sm',
@@ -1665,18 +1652,19 @@ mgrApp.controller("saltconfigserverCtrl", function ($scope,$http,$modal,$log,
   };
 
   // --------------------------------------------------------------------
-  $scope.ModalInstanceCtrl = function ($scope, $modalInstance, classname) {
+  $scope.ModalInstanceCtrl = function ($scope, $uibModalInstance,
+          classname) {
   // --------------------------------------------------------------------
 
     // So the template can access 'classname' in this new scope
     $scope.classname = classname;
 
     $scope.ok = function () {
-      $modalInstance.close();
+      $uibModalInstance.close();
     };
 
     $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
+      $uibModalInstance.dismiss('cancel');
     };
   };
 
