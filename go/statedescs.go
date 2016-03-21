@@ -60,8 +60,9 @@ type Job struct {
 	DeletedAt     time.Time
 	UserLogin     string
 	Errors        int64
-	EnvId         int64 // For WorkerUrl and WorkerKey
-	Type          int64 // 1 - user job, 2 - system job
+	EnvId         int64  // For WorkerUrl and WorkerKey
+	EnvCapDesc    string // For WorkerUrl and WorkerKey, e.g. "SALT_WORKER"
+	Type          int64  // 1 - user job, 2 - system job
 }
 
 // For retrieving details from the Manager
@@ -135,7 +136,7 @@ func GET(url, endpoint string) (r *http.Response, e error) {
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	client := &http.Client{Transport: tr}
-    // Not available in Go<1.3
+	// Not available in Go<1.3
 	//client.Timeout = 8 * 1e9
 
 	//fmt.Printf("\n%s/api/%s\n",url,endpoint)
@@ -187,7 +188,7 @@ func POST(jsondata []byte, url, endpoint string) (r *http.Response, e error) {
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	client := &http.Client{Transport: tr}
-    // Not available in Go<1.3
+	// Not available in Go<1.3
 	//client.Timeout = 8 * 1e9
 
 	//fmt.Printf("\n%s/api/%s\n",url,endpoint)
@@ -293,9 +294,10 @@ func (t *Plugin) RunScript(args *Args, response *[]byte) (int64, error) {
 
 	// Set up some fields for the Job struct we'll send to the master
 	job := Job{
-		ScriptId: scripts[0].Id,
-		EnvId:    env_id,
-		Args:     cmdargs,
+		ScriptId:   scripts[0].Id,
+		EnvId:      env_id,
+		EnvCapDesc: "SALT_WORKER",
+		Args:       cmdargs,
 
 		// Type 1 - User Job - Output is
 		//     sent back as it's created
@@ -423,9 +425,10 @@ func (t *Plugin) GetRequest(args *Args, response *[]byte) error {
 
 	// Set up some fields for the Job struct we'll send to the master
 	job := Job{
-		ScriptId: scripts[0].Id,
-		EnvId:    env_id,
-		Args:     envs[0].SysName + version_text,
+		ScriptId:   scripts[0].Id,
+		EnvId:      env_id,
+		EnvCapDesc: "SALT_WORKER",
+		Args:       envs[0].SysName + version_text,
 
 		// Type 1 - User Job - Output is
 		//     sent back as it's created
