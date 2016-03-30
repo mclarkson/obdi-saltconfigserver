@@ -215,7 +215,7 @@
                       ng-if="server.Responded">
                     </td>
                     <td>{{server.Name}}</td>
-                    <td>{{server.Version}}
+                    <td><span class="red" ng-if="!server.Version">!! Error !! Assign a version</span>{{server.Version}}
                       <a href="#" ng-click="ChangeServerVersion(server)"
                       ng-if="server.Selected">
                         <i class="fa fa-plus-square" title="Change Version"></i></a>
