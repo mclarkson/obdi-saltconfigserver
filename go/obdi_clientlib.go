@@ -47,6 +47,23 @@ type Job struct {
 }
 
 // For retrieving details from the Manager
+type Env struct {
+	Id       int64
+	DispName string // Display name
+	SysName  string // System name (Salt name)
+	/*Dc          Dc*/ // only for creating Env and substruct
+	DcId               int64
+	DcSysName          string
+	//WorkerIp    string      // Hostname or IP address of worker
+	//WorkerPort  string      // Port the worker listens on
+	WorkerUrl string // Worker URL Prefix
+	WorkerKey string // Key (password) for worker
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt time.Time
+}
+
+// For retrieving details from the Manager
 type Script struct {
 	Id        int64
 	Name      string
@@ -72,6 +89,7 @@ type Plugin struct{}
 type Reply struct {
 	// Add more if required
 	JobId int64
+	Text  string
 	// Must have the following
 	PluginReturn int64 // 0 - success, 1 - error
 	PluginError  string
@@ -87,7 +105,7 @@ type ScriptArgs struct {
 
 func ReturnError(text string, response *[]byte) {
 
-	errtext := Reply{0, ERROR, text}
+	errtext := Reply{0, "", ERROR, text}
 	logit(text)
 	jsondata, _ := json.Marshal(errtext)
 	*response = jsondata
@@ -221,11 +239,6 @@ func (t *Plugin) RunScript(args *Args, sa ScriptArgs, response *[]byte) (int64, 
 	}
 
 	env_id, _ := strconv.ParseInt(args.QueryString["env_id"][0], 10, 64)
-
-	if len(args.QueryString["salt_id"]) == 0 {
-		ReturnError("'salt_id' must be set", response)
-		return 0, ApiError{"Error"}
-	}
 
 	// Get the ScriptId from the scripts table for:
 	scriptName := sa.ScriptName

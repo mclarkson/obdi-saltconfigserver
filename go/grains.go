@@ -37,6 +37,11 @@ func (t *Plugin) GetRequest(args *Args, response *[]byte) error {
 
 	// Use salt to change the version, if it's changed
 
+	if len(args.QueryString["salt_id"]) == 0 {
+		ReturnError("'salt_id' must be set", response)
+		return nil
+	}
+
 	sa := ScriptArgs{
 		ScriptName: "salt-grains.sh",
 		CmdArgs:    args.QueryString["salt_id"][0],
@@ -52,7 +57,7 @@ func (t *Plugin) GetRequest(args *Args, response *[]byte) error {
 		return nil
 	}
 
-	reply := Reply{jobid, SUCCESS, ""}
+	reply := Reply{jobid, "", SUCCESS, ""}
 	jsondata, err := json.Marshal(reply)
 	if err != nil {
 		ReturnError("Marshal error: "+err.Error(), response)
@@ -78,6 +83,11 @@ func (t *Plugin) PostRequest(args *Args, response *[]byte) error {
 
 	// Use salt to change the version, if it's changed
 
+	if len(args.QueryString["salt_id"]) == 0 {
+		ReturnError("'salt_id' must be set", response)
+		return nil
+	}
+
 	sa := ScriptArgs{
 		ScriptName: "salt-set-grains.sh",
 		CmdArgs: args.QueryString["salt_id"][0] + " " +
@@ -99,7 +109,7 @@ func (t *Plugin) PostRequest(args *Args, response *[]byte) error {
 		return nil
 	}
 
-	reply := Reply{jobid, SUCCESS, ""}
+	reply := Reply{jobid, "", SUCCESS, ""}
 	jsondata, err := json.Marshal(reply)
 	if err != nil {
 		ReturnError("Marshal error: "+err.Error(), response)

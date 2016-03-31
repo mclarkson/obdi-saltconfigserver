@@ -21,8 +21,6 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
-	"log"
-	"log/syslog"
 	"net"
 	"net/rpc"
 	"os"
@@ -73,21 +71,18 @@ type Config struct {
 	Port     int
 }
 
-// --------------------------------------------------------------------------
 func (c *Config) DBPath() string {
-	// --------------------------------------------------------------------------
+
 	return c.Dbname
 }
 
-// --------------------------------------------------------------------------
 func (c *Config) SetDBPath(path string) {
-	// --------------------------------------------------------------------------
+
 	c.Dbname = path
 }
 
-// --------------------------------------------------------------------------
 func NewConfig() {
-	// --------------------------------------------------------------------------
+
 	config = &Config{}
 }
 
@@ -97,9 +92,8 @@ type GormDB struct {
 	db gorm.DB
 }
 
-// --------------------------------------------------------------------------
 func (gormInst *GormDB) InitDB() error {
-	// --------------------------------------------------------------------------
+
 	var err error
 	dbname := config.DBPath()
 
@@ -127,57 +121,18 @@ func (gormInst *GormDB) InitDB() error {
 	return nil
 }
 
-// --------------------------------------------------------------------------
 func (gormInst *GormDB) DB() *gorm.DB {
-	// --------------------------------------------------------------------------
+
 	return &gormInst.db
 }
 
-// --------------------------------------------------------------------------
 func NewDB() (*GormDB, error) {
-	// --------------------------------------------------------------------------
+
 	gormInst := &GormDB{}
 	if err := gormInst.InitDB(); err != nil {
 		return gormInst, err
 	}
 	return gormInst, nil
-}
-
-// ***************************************************************************
-// ERRORS
-// ***************************************************************************
-
-const (
-	SUCCESS = 0
-	ERROR   = 1
-)
-
-type ApiError struct {
-	details string
-}
-
-// --------------------------------------------------------------------------
-func (e ApiError) Error() string {
-	// --------------------------------------------------------------------------
-	return fmt.Sprintf("%s", e.details)
-}
-
-// ***************************************************************************
-// LOGGING
-// ***************************************************************************
-
-// --------------------------------------------------------------------------
-func logit(msg string) {
-	// --------------------------------------------------------------------------
-	// Log to syslog
-	log.Println(msg)
-	l, err := syslog.New(syslog.LOG_ERR, "obdi")
-	defer l.Close()
-	if err != nil {
-		log.Fatal("error writing syslog!")
-	}
-
-	l.Err(msg)
 }
 
 // ***************************************************************************
@@ -190,16 +145,14 @@ type PortLock struct {
 	ln       net.Listener
 }
 
-// --------------------------------------------------------------------------
 func NewPortLock(port int) *PortLock {
-	// --------------------------------------------------------------------------
+
 	// NewFLock creates new Flock-based lock (unlocked first)
 	return &PortLock{hostport: net.JoinHostPort("127.0.0.1", strconv.Itoa(port))}
 }
 
-// --------------------------------------------------------------------------
 func (p *PortLock) Lock() {
-	// --------------------------------------------------------------------------
+
 	// Lock acquires the lock, blocking
 	t := 50 * time.Millisecond
 	for {
@@ -207,16 +160,14 @@ func (p *PortLock) Lock() {
 			p.ln = l // thanks to zhangpy
 			return
 		}
-		//log.Printf("spinning lock on %s (%s)", p.hostport, err)
 		time.Sleep(t)
 		//t = time.Duration(
 		//  math.Min( float64(time.Duration(float32(t) * 1.5)), 2000 ))
 	}
 }
 
-// --------------------------------------------------------------------------
 func (p *PortLock) Unlock() {
-	// --------------------------------------------------------------------------
+
 	// Unlock releases the lock
 	if p.ln != nil {
 		p.ln.Close()
@@ -269,55 +220,23 @@ func (p *PortLock) Unlock() {
 // GO RPC PLUGIN
 // ***************************************************************************
 
-// Args are send over RPC from the Manager
-type Args struct {
-	PathParams  map[string]string
-	QueryString map[string][]string
-	PostData    []byte
-	QueryType   string
-}
-
 type PostedData struct {
 	Classes     []string
 	Dc          string
 	Environment string
 }
 
-type Plugin struct{}
-
-// The reply will be sent and output by the master
-type Reply struct {
-	// Add more if required
-	EncData string
-	// Must have the following
-	PluginReturn int64 // 0 - success, 1 - error
-	PluginError  string
-}
-
-// --------------------------------------------------------------------------
 func Unlock() {
-	// --------------------------------------------------------------------------
+
 	config.Portlock.Unlock()
 }
 
-// --------------------------------------------------------------------------
 func Lock() {
-	// --------------------------------------------------------------------------
+
 	config.Portlock.Lock()
 }
 
-// --------------------------------------------------------------------------
-func ReturnError(text string, response *[]byte) {
-	// --------------------------------------------------------------------------
-	errtext := Reply{"", ERROR, text}
-	logit(text)
-	jsondata, _ := json.Marshal(errtext)
-	*response = jsondata
-}
-
-// --------------------------------------------------------------------------
 func (t *Plugin) GetRequest(args *Args, response *[]byte) error {
-	// --------------------------------------------------------------------------
 
 	// Check for required query string entries
 
@@ -583,7 +502,7 @@ func (t *Plugin) GetRequest(args *Args, response *[]byte) error {
 
 	// Reply with the EncData (back to the master)
 
-	reply := Reply{EncData, SUCCESS, ""}
+	reply := Reply{0, EncData, SUCCESS, ""}
 	jsondata, err := json.Marshal(reply)
 
 	if err != nil {
@@ -596,9 +515,7 @@ func (t *Plugin) GetRequest(args *Args, response *[]byte) error {
 	return nil
 }
 
-// --------------------------------------------------------------------------
 func (t *Plugin) PostRequest(args *Args, response *[]byte) error {
-	// --------------------------------------------------------------------------
 
 	//ReturnError( "Internal error: Unimplemented HTTP POST with data " +
 	//  fmt.Sprintf(": %s",args.PostData), response )
@@ -687,7 +604,7 @@ func (t *Plugin) PostRequest(args *Args, response *[]byte) error {
 		Unlock()
 	}
 
-	reply := Reply{"", SUCCESS, ""}
+	reply := Reply{0, "", SUCCESS, ""}
 	jsondata, err := json.Marshal(reply)
 
 	if err != nil {
@@ -700,9 +617,8 @@ func (t *Plugin) PostRequest(args *Args, response *[]byte) error {
 	return nil
 }
 
-// --------------------------------------------------------------------------
 func (t *Plugin) HandleRequest(args *Args, response *[]byte) error {
-	// --------------------------------------------------------------------------
+
 	// All plugins must have this.
 
 	if len(args.QueryType) > 0 {
@@ -727,9 +643,9 @@ func (t *Plugin) HandleRequest(args *Args, response *[]byte) error {
 // ENTRY POINT
 // ***************************************************************************
 
-// --------------------------------------------------------------------------
 func main() {
-	// --------------------------------------------------------------------------
+
+	//logit("Plugin starting")
 
 	// Sets the global config var
 	NewConfig()
@@ -747,14 +663,15 @@ func main() {
 	plugin := new(Plugin)
 	rpc.Register(plugin)
 
-	//for {
+	//logit("Plugin listening on port " + os.Args[1])
+
 	if conn, err := listener.Accept(); err != nil {
 		txt := fmt.Sprintf("Accept error. ", err)
 		logit(txt)
 	} else {
+		//logit("New connection established")
 		rpc.ServeConn(conn)
 	}
-	//}
 }
 
 // vim:ts=2:sw=2:et

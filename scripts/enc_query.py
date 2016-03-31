@@ -126,7 +126,7 @@ def enc_query( g ):
 
     html = json.loads( response.read() )
 
-    return html['EncData']
+    return html['Text']
 
 def usage():
     print "enc_query.py salt_id"

@@ -1194,7 +1194,7 @@ mgrApp.controller("saltconfigserverCtrl", function ($scope,$http,$uibModal
            + "&dc=" + $scope.env.DcSysName
            + '&time='+new Date().getTime().toString()
     }).success( function(data, status, headers, config) {
-      $scope.configs[saltid] = $.parseJSON(data['EncData']);
+      $scope.configs[saltid] = $.parseJSON(data['Text']);
     }).error( function(data,status) {
       if (status>=500) {
         $scope.login.errtext = "Server error.";
@@ -1242,7 +1242,7 @@ mgrApp.controller("saltconfigserverCtrl", function ($scope,$http,$uibModal
            + "&dc=" + $scope.env.DcSysName
            + '&time='+new Date().getTime().toString()
     }).success( function(data, status, headers, config) {
-      $scope.config = $.parseJSON(data['EncData']);
+      $scope.config = $.parseJSON(data['Text']);
       if( $scope.config.Classes != null ) {
         $scope.config.Classes.sort(function(a, b){
           if(a < b) return -1;

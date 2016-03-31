@@ -32,6 +32,11 @@ func (t *Plugin) GetRequest(args *Args, response *[]byte) error {
 
 	// Check for required query string entries
 
+	if len(args.QueryString["salt_id"]) == 0 {
+		ReturnError("'salt_id' must be set", response)
+		return nil
+	}
+
 	sa := ScriptArgs{
 		ScriptName: "salt-grains-cache.sh",
 		CmdArgs:    args.QueryString["salt_id"][0],
@@ -49,11 +54,11 @@ func (t *Plugin) GetRequest(args *Args, response *[]byte) error {
 
 	// Send the Job ID as the RPC reply (back to the master)
 
-	reply := Reply{jobid, SUCCESS, ""}
+	reply := Reply{jobid, "", SUCCESS, ""}
 	jsondata, err := json.Marshal(reply)
 
 	if err != nil {
-		errtext := Reply{0, ERROR, "Marshal error: " + err.Error()}
+		errtext := Reply{0, "", ERROR, "Marshal error: " + err.Error()}
 		jsondata, _ := json.Marshal(errtext)
 		*response = jsondata
 		return nil
