@@ -116,9 +116,8 @@ func (t *Plugin) PostRequest(args *Args, response *[]byte) error {
 	return nil
 }
 
-// --------------------------------------------------------------------------
 func (t *Plugin) HandleRequest(args *Args, response *[]byte) error {
-	// --------------------------------------------------------------------------
+
 	// All plugins must have this.
 
 	if len(args.QueryType) > 0 {
@@ -139,9 +138,7 @@ func (t *Plugin) HandleRequest(args *Args, response *[]byte) error {
 	}
 }
 
-// --------------------------------------------------------------------------
 func main() {
-	// --------------------------------------------------------------------------
 
 	//logit("Plugin starting")
 
