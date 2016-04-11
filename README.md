@@ -55,4 +55,7 @@ Refer to [obdi-salt-repository](https://github.com/mclarkson/obdi-salt-repositor
 
 ## System configuration
 
+## Dev
+
+![](doc/Salt_ENC_DB_Schema.png?raw=true)
 
