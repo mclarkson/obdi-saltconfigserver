@@ -3,7 +3,7 @@ Obdi plugin to allow configuration of servers
 
 ## Screenshot
 
-![](images/saltconfigserver.png?raw=true)
+![](images/saltconfigserver_400x300.png?raw=true)
 
 ## What is it?
 
