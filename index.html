@@ -1,107 +1,79 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>Obdi-saltconfigserver by mclarkson</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Obdi-saltconfigserver</h1>
-      <h2 class="project-tagline">Obdi plugin to allow configuration of servers</h2>
-      <a href="https://github.com/mclarkson/obdi-saltconfigserver" class="btn">View on GitHub</a>
-      <a href="https://github.com/mclarkson/obdi-saltconfigserver/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/mclarkson/obdi-saltconfigserver/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
-
-    <section class="main-content">
-      <h1>
-<a id="obdi-saltconfigserver" class="anchor" href="#obdi-saltconfigserver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>obdi-saltconfigserver</h1>
-
-<p>Obdi plugin to allow configuration of servers</p>
-
-<h2>
-<a id="screenshot" class="anchor" href="#screenshot" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Screenshot</h2>
-
-<p><img src="images/saltconfigserver_400x300.png?raw=true" alt=""></p>
-
-<h2>
-<a id="what-is-it" class="anchor" href="#what-is-it" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What is it?</h2>
-
-<p>This Obdi plugin allows the user to:</p>
-
-<ul>
-<li>view all servers in an environment.</li>
-<li>send a state.highstate to one or more servers.</li>
-<li>add or remove Salt States from individual servers.
-An External Node Classifier, or ENC, is provided as a REST end-point to
-accomplish this, along with a Python script that needs to be added to
-the Salt configuration file.</li>
-<li>assign GIT versions to one or more servers.</li>
-<li>view the Grains information for servers.</li>
-</ul>
-
-<h2>
-<a id="theory" class="anchor" href="#theory" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Theory</h2>
-
-<h4>
-<a id="salt-states-and-formulas" class="anchor" href="#salt-states-and-formulas" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Salt States and Formulas</h4>
-
-<p>Salt States and Formulas are referred to as Classes in all areas of the Web Interface.
-This term has been borrowed from Puppet just because it's easier to fit into
-various areas of the GUI.</p>
-
-<p>When choosing states to add to a server only the states available for the current GIT
-version are shown, along with a description of the state/formula. To supply a description
-that will be shown in the Web Interface, the administrator adds comments at the top of
-each state file containing the description. The format is as follows:</p>
-
-<pre><code># INFO: A description for this state file
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.1.25">
+  <meta charset="UTF-8">
+  <title>Obdi-saltconfigserver by mclarkson</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+</head>
+<body>
+  <section class="page-header">
+    <h1 class="project-name">Obdi-saltconfigserver</h1>
+    <h2 class="project-tagline">Obdi plugin to allow configuration of servers</h2>
+    <a href= "https://github.com/mclarkson/obdi-saltconfigserver" class="btn">View on GitHub</a>
+    <a href="http://saltstack.obdi.io" class="btn">Parent Repository</a>
+    <a href="http://obdi.io" class="btn">Obdi Home Page</a>
+    <!--
+    <a href= "https://github.com/mclarkson/obdi-saltconfigserver/zipball/master" class="btn">Download .zip</a>
+    <a href= "https://github.com/mclarkson/obdi-saltconfigserver/tarball/master" class="btn">Download .tar.gz</a>
+    -->
+  </section>
+  <section class="main-content">
+    <h1><a id="obdi-saltconfigserver" class="anchor" href="#obdi-saltconfigserver" aria-hidden=
+    "true"></a>obdi-saltconfigserver</h1>
+    <p>Obdi plugin to allow configuration of servers</p>
+    <h2><a id="screenshot" class="anchor" href="#screenshot" aria-hidden="true"></a>Screenshot</h2>
+    <p><img src="images/saltconfigserver_400x300.png?raw=true" alt=""></p>
+    <h2><a id="what-is-it" class="anchor" href="#what-is-it" aria-hidden="true"></a>What is it?</h2>
+    <p>This Obdi plugin allows the user to:</p>
+    <ul>
+      <li>view all servers in an environment.</li>
+      <li>send a state.highstate to one or more servers.</li>
+      <li>add or remove Salt States from individual servers. An External Node Classifier, or ENC, is provided as a REST
+      end-point to accomplish this, along with a Python script that needs to be added to the Salt configuration
+      file.</li>
+      <li>assign GIT versions to one or more servers.</li>
+      <li>view the Grains information for servers.</li>
+    </ul>
+    <h2><a id="theory" class="anchor" href="#theory" aria-hidden="true"></a>Theory</h2>
+    <h4><a id="salt-states-and-formulas" class="anchor" href="#salt-states-and-formulas" aria-hidden="true"></a>Salt
+    States and Formulas</h4>
+    <p>Salt States and Formulas are referred to as Classes in all areas of the Web Interface. This term has been
+    borrowed from Puppet just because it's easier to fit into various areas of the GUI.</p>
+    <p>When choosing states to add to a server only the states available for the current GIT version are shown, along
+    with a description of the state/formula. To supply a description that will be shown in the Web Interface, the
+    administrator adds comments at the top of each state file containing the description. The format is as follows:</p>
+    <pre><code># INFO: A description for this state file
 # INFO: that can span multiple lines
 </code></pre>
-
-<h4>
-<a id="datacentres-and-environments" class="anchor" href="#datacentres-and-environments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Datacentres and environments</h4>
-
-<p>Saved on each server as the grains: dc and env.</p>
-
-<h4>
-<a id="git-versioning" class="anchor" href="#git-versioning" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>GIT Versioning</h4>
-
-<p>Saved on each server as the grain: version.</p>
-
-<p>environment_&lt;semantic-version&gt;</p>
-
-<p>For example, test_0.1.123 or prod_1.0.27</p>
-
-<h2>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
-
-<h4>
-<a id="installing-the-plugin" class="anchor" href="#installing-the-plugin" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installing the plugin</h4>
-
-<p>Refer to <a href="https://github.com/mclarkson/obdi-salt-repository">obdi-salt-repository</a> and <a href="https://github.com/mclarkson/obdi/blob/master/doc/plugins.md">Obdi Plugins</a> to install this plugin.</p>
-
-<h2>
-<a id="system-configuration" class="anchor" href="#system-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>System configuration</h2>
-
-<h2>
-<a id="dev" class="anchor" href="#dev" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dev</h2>
-
-<p><img src="doc/Salt_ENC_DB_Schema.png?raw=true" alt=""></p>
-
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/mclarkson/obdi-saltconfigserver">Obdi-saltconfigserver</a> is maintained by <a href="https://github.com/mclarkson">mclarkson</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
-
-    </section>
-
-  
-  </body>
+    <h4><a id="datacentres-and-environments" class="anchor" href="#datacentres-and-environments" aria-hidden=
+    "true"></a>Datacentres and environments</h4>
+    <p>Saved on each server as the grains: dc and env.</p>
+    <h4><a id="git-versioning" class="anchor" href="#git-versioning" aria-hidden="true"></a>GIT Versioning</h4>
+    <p>Saved on each server as the grain: version.</p>
+    <p>environment_&lt;semantic-version&gt;</p>
+    <p>For example, test_0.1.123 or prod_1.0.27</p>
+    <h2><a id="installation" class="anchor" href="#installation" aria-hidden="true"></a>Installation</h2>
+    <h4><a id="installing-the-plugin" class="anchor" href="#installing-the-plugin" aria-hidden="true"></a>Installing
+    the plugin</h4>
+    <p>Refer to <a href="https://github.com/mclarkson/obdi-salt-repository">obdi-salt-repository</a> and <a href=
+    "https://github.com/mclarkson/obdi/blob/master/doc/plugins.md">Obdi Plugins</a> to install this plugin.</p>
+    <h2><a id="system-configuration" class="anchor" href="#system-configuration" aria-hidden="true"></a>System
+    configuration</h2>
+    <h2><a id="dev" class="anchor" href="#dev" aria-hidden="true"></a>Dev</h2>
+    <p><img src="doc/Salt_ENC_DB_Schema.png?raw=true" alt=""></p>
+    <footer class="site-footer">
+      <span class="site-footer-owner"><a href=
+      "https://github.com/mclarkson/obdi-saltconfigserver">Obdi-saltconfigserver</a> is maintained by <a href=
+      "https://github.com/mclarkson">mclarkson</a>.</span> <span class="site-footer-credits">This page was generated by
+      <a href="https://pages.github.com">GitHub Pages</a> using the <a href=
+      "https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason
+      Long</a>.</span>
+    </footer>
+  </section>
+</body>
 </html>
